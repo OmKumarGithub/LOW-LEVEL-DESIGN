@@ -1,52 +1,87 @@
 package Factory.Sol;
 
-abstract class Abs {
-    // abstarct isliye because we can define some functionalty which should be in all 
-    public abstract void display();
-}
+import java.util.Random;
 
 
-// Concrete Abss
-class ConcreteAbsA extends Abs {
-    
-    public void display() {
-        System.out.println("This is Concrete Abs A.");
-    }
-}
- 
-class ConcreteAbsB extends Abs {
-        public void display() {
-        System.out.println("This is Concrete Abs B.");
-    }
-}
- 
-// Creator Abstract Class
-abstract class Creator {
-    public abstract Abs factoryMethod();
-}
- 
-// Concrete Creators
-class ConcreteCreatorA extends Creator {
-    public Abs factoryMethod() {
-        return new ConcreteAbsA();
-    }
-}
- 
-class ConcreteCreatorB extends Creator {
-    public Abs factoryMethod() {
-        return new ConcreteAbsB();
-    }
-}
- 
-// main function...........
-public class Solution {
+
+// Everything should be an interface because it gives an overview and it binds the child classes to use those methods so try to use interface everywhere............
+
+class Solution {
+
     public static void main(String[] args) {
-        Creator creatorA = new ConcreteCreatorA();
-        Abs AbsA = creatorA.factoryMethod();
-        AbsA.display();
- 
-        Creator creatorB = new ConcreteCreatorB();
-        Abs AbsB = creatorB.factoryMethod();
-        AbsB.display();
+        Animal variabAnimal = new RandomAnimalFactory().factoryMethod();
+        Animal variAnimal2 = new StateFullAnimalFactory().factoryMethod();
+        System.out.println(variabAnimal);
+        System.out.println(variAnimal2);
     }
 }
+
+
+
+// factory method as a result jo dega wo idhar defined hai **********************************************************************
+interface Animal {
+    public void brain();
+
+    public void species();
+}
+
+// Concrete classed
+class Dog implements Animal {
+    public void brain() {
+        System.err.println("dog brain yes");
+    }
+
+    public void species() {
+        System.err.println("dog soecies");
+    }
+    // can add some extra methods
+}
+
+class Cat implements Animal {
+    public void brain() {
+        System.err.println("cat brain yes");
+    }
+
+    public void species() {
+        System.err.println("cat soecies");
+    }
+    // can add some extra methods
+
+}
+
+
+// **********************************************************************
+
+
+// factory method **********************************************************************
+
+interface AnimalFactory {
+     public Animal factoryMethod();
+}
+
+class RandomAnimalFactory implements AnimalFactory {
+     public Animal factoryMethod() {
+        Random rand = new Random();
+        int num = rand.nextInt(2);
+        if (num == 1) {
+            return new Cat();
+        } else {
+            return new Dog();
+        }
+    }
+}
+
+class StateFullAnimalFactory implements AnimalFactory {
+ boolean state = false;
+
+ public Animal factoryMethod() {
+        if (state == false) {
+            state = true;
+            return new Cat();
+        } else {
+            return new Dog();
+        }
+    }
+}
+
+// *********************************************************************
